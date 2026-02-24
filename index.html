@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>할 일 관리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>할 일 수첩</h1>
+      <div class="dashboard-row">
+        <div class="dashboard-col dashboard-left">
+          <div id="calendar" class="calendar"></div>
+        </div>
+        <div class="dashboard-col dashboard-center">
+          <section class="notebook-section">
+            <div class="notebook-paper">
+              <div class="notebook-line"></div>
+              <h2 class="notebook-title">오늘의 할 일</h2>
+              <div class="notebook-line"></div>
+              <div id="today-todos" class="notebook-content">
+                <p class="empty-message">오늘 등록된 할 일이 없습니다.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="dashboard-col dashboard-right">
+          <div class="phrase-card">
+            <h2 class="phrase-title">Phrase of the day</h2>
+            <div id="phrase-content" class="phrase-content">
+              <p class="phrase-loading">불러오는 중…</p>
+            </div>
+            <p id="phrase-author" class="phrase-author"></p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- (2) 새로운 할 일 추가하기 버튼 -->
+    <div class="add-section">
+      <button type="button" class="btn-add" id="btn-add-todo" aria-label="새 할 일 추가">
+        <span class="btn-icon">+</span>
+        새로운 할 일 추가하기
+      </button>
+    </div>
+
+    <!-- 모달 -->
+    <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+      <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+        <div class="modal-header">
+          <h2 id="modal-title">새 할 일 추가</h2>
+          <button type="button" class="btn-close" id="btn-close-modal" aria-label="닫기">&times;</button>
+        </div>
+        <form id="todo-form" class="modal-body">
+          <input type="hidden" id="todo-edit-id" name="todo-edit-id" value="">
+          <div class="form-group">
+            <label for="todo-date">일자</label>
+            <input type="date" id="todo-date" name="todo-date" required>
+          </div>
+          <div class="form-group">
+            <label for="todo-time">마감 시간</label>
+            <input type="time" id="todo-time" name="todo-time" placeholder="선택 사항">
+          </div>
+          <div class="form-group">
+            <label for="todo-title">제목</label>
+            <input type="text" id="todo-title" name="todo-title" placeholder="할 일 제목" required maxlength="100">
+          </div>
+          <div class="form-group">
+            <label for="todo-detail">상세 내용</label>
+            <textarea id="todo-detail" name="todo-detail" placeholder="상세 내용을 입력하세요" rows="4"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" id="btn-cancel">취소</button>
+            <button type="submit" class="btn btn-submit" id="btn-submit-todo">추가하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 날짜별 할 일 모달 (캘린더 날짜 클릭 시) -->
+    <div class="modal-overlay" id="date-modal-overlay" aria-hidden="true">
+      <div class="modal" role="dialog" aria-labelledby="date-modal-title" aria-modal="true">
+        <div class="modal-header">
+          <h2 id="date-modal-title">해당 날짜 할 일</h2>
+          <button type="button" class="btn-close" id="btn-close-date-modal" aria-label="닫기">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="date-modal-tasks" class="date-modal-tasks"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (3) 할 일 목록 - 진행 경과 / 리스트보기 전환 -->
+    <section class="todo-list-section">
+      <h2 class="section-title">전체 할 일 목록</h2>
+      <div class="view-toggles">
+        <button type="button" class="view-toggle is-active" id="btn-view-progress" aria-pressed="true">진행 경과 확인</button>
+        <button type="button" class="view-toggle" id="btn-view-list" aria-pressed="false">리스트보기</button>
+      </div>
+      <div id="todo-view-progress" class="todo-view">
+        <div class="status-legend" aria-hidden="true">
+          <span class="legend-item legend-pending">진행 전</span>
+          <span class="legend-item legend-in_progress">진행 중</span>
+          <span class="legend-item legend-done">완료</span>
+        </div>
+        <div class="todo-list three-cols">
+          <div class="todo-col todo-col-pending">
+            <h3 class="col-title">진행 전 <span class="count" id="count-pending">0</span></h3>
+            <div id="todo-list-pending" class="todo-col-inner"></div>
+          </div>
+          <div class="todo-col todo-col-in_progress">
+            <h3 class="col-title">진행 중 <span class="count" id="count-in_progress">0</span></h3>
+            <div id="todo-list-in_progress" class="todo-col-inner"></div>
+          </div>
+          <div class="todo-col todo-col-done">
+            <h3 class="col-title">완료 <span class="count" id="count-done">0</span></h3>
+            <div id="todo-list-done" class="todo-col-inner"></div>
+          </div>
+        </div>
+      </div>
+      <div id="todo-view-list" class="todo-view is-hidden">
+        <div id="todo-list-chronological" class="todo-list-single"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
