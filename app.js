@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = 'todo-app-items';
+  var todos = [];
 
   const todayEl = document.getElementById('today-todos');
   const todoListPendingEl = document.getElementById('todo-list-pending');
@@ -54,16 +54,11 @@
   }
 
   function loadTodos() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
+    return todos;
   }
 
-  function saveTodos(todos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  function saveTodos(updated) {
+    todos = updated;
   }
 
   function openNewTodoForDate(dateKey) {
